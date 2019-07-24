@@ -26,10 +26,7 @@ const Fee = (amount) => {
   r = parseFloat(r);
 
   return (
-    <div>
-      <label>Receive BTC: </label>
-      <CurrencyInput decimalSeparator="," thousandSeparator="." precision="8" value={r}/>
-    </div>
+    <CurrencyInput decimalSeparator="," thousandSeparator="." precision="8" value={r}/>
   );
 
 }
