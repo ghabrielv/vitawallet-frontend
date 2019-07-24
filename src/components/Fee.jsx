@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import CurrencyInput from 'react-currency-input';
 
 const Fee = (amount) => {
   const [fee, changeFee] = useState(undefined);
@@ -19,10 +20,16 @@ const Fee = (amount) => {
 
   if (fee === undefined) return null;
 
-  let r = amount.Amount * fee.btc_buy;
+  let usd = (amount.Amount).toString().replace('.', '').replace(',', '.');
+  let r = ((parseFloat(usd) / fee.btc_buy)).toFixed(9);
+  r = r.toString().substring(0, (r.length - 1));
+  r = parseFloat(r);
 
   return (
-    <label>Receive: {r}</label>
+    <div>
+      <label>Receive BTC: </label>
+      <CurrencyInput decimalSeparator="," thousandSeparator="." precision="8" value={r}/>
+    </div>
   );
 
 }

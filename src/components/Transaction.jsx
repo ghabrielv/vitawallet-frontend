@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Fee from './Fee';
 import axios from 'axios';
+import CurrencyInput from 'react-currency-input';
 
 const Transaction = () => {
-    const [amount, setAmount] = useState(6984.89);
+    const [amount, setAmount] = useState('6984,89');
 
-    const handleSubmit = () => {
+    const handleClick = () => {
+        let usd = parseFloat(amount.toString().replace('.', '').replace(',', '.'));
         let config = {
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
@@ -15,12 +17,12 @@ const Transaction = () => {
         let body = {
             "currency_send": "usd",
             "currency_receive": "btc",
-            "amount": amount
+            "amount": usd
         };
-
         axios.post('http://localhost:5000/api/transaction', body, config)
         .then((res) => {
-            console.log(res);
+            console.log(res.data);
+            alert('Intercambio realizado correctamente.');
         })
         .catch((err) => {
             console.log(err);
@@ -32,17 +34,13 @@ const Transaction = () => {
     }
     
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-            Amount:
-            <input type="number" value={amount} onChange={handleChange} />
-            </label>
+        <div>
+            <label>Amount USD: </label>
+            <CurrencyInput decimalSeparator="," thousandSeparator="." precision="2" value={amount} onChangeEvent={handleChange}/>
             <br></br>
             <Fee Amount={amount} />
-            <br></br>
-            <input type="submit" value="COMPRAR" />
-        </form>
-        
+            <button onClick={handleClick}>COMPRAR</button>
+        </div>
     );
 };
 
