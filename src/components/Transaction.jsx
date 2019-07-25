@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import CurrencyInput from 'react-currency-input';
 import { Alert, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle, Label, Button } from 'reactstrap';
+import { connect } from 'react-redux';
 import Fee from './Fee';
 import configureStore  from '../store/configureStore';
 import { handleInputChange, handleInputChangeJson, addTransaction } from '../actions';
@@ -12,14 +13,12 @@ store.subscribe(() =>
     console.log(store.getState())
 )
 
-const Transaction = () => {
-    const [amount, setAmount] = useState('6984,89');
+const Transaction = (props) => {
+    const [amount, setAmount] = useState(props.newTransaction.amount);
     const [message, setMessage] = useState('');
 
     let usd = parseFloat(amount.toString().replace('.', '').replace(',', '.'));
 
-    store.dispatch(handleInputChange('currency_receive', 'btc'))
-    store.dispatch(handleInputChange('commission', 0))
     store.dispatch(handleInputChange('amount', usd))
     
     const handleClick = () => {
@@ -30,9 +29,9 @@ const Transaction = () => {
             }
         };
         let body = {
-            "currency_send": 'usd',
-            "currency_receive": store.getState().transactions.newTransaction.currency_receive,
-            "amount": store.getState().transactions.newTransaction.amount
+            "currency_send": props.newTransaction.currency_send,
+            "currency_receive": props.newTransaction.currency_receive,
+            "amount": usd
         };
         axios.post('http://localhost:5000/api/transaction', body, config)
         .then((res) => {
@@ -57,11 +56,11 @@ const Transaction = () => {
                     <Card>
                         <CardBody>
                             <CardTitle>
-                                <Label for="amount" color="blue">Send in USD</Label>
+                                <Label for="amount" color="blue">Send in {props.newTransaction.currency_send.toUpperCase()}</Label>
                                 <div><CurrencyInput decimalSeparator="," thousandSeparator="." precision="2" value={amount} onChangeEvent={handleChange}/></div>
                             </CardTitle>
                             <CardSubtitle>
-                                <Label for="receive">Receive in BTC</Label><br></br>
+                                <Label for="receive">Receive in {props.newTransaction.currency_receive.toUpperCase()}</Label><br></br>
                                 <Fee store={store} />
                             </CardSubtitle>
                             <Alert color="light">{message}</Alert>
@@ -74,4 +73,16 @@ const Transaction = () => {
     );
 };
 
-export default Transaction;
+const mapStateToProps = (state) => {
+    return {
+        newTransaction: state.transactions.newTransaction
+    }
+}
+
+const mapDispatchToProps = () => {
+    return {
+        type: 'ADD_TRANSACTION'
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transaction);
