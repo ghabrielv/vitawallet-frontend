@@ -3,6 +3,14 @@ import Fee from './Fee';
 import axios from 'axios';
 import CurrencyInput from 'react-currency-input';
 import { Alert, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle, CardText, Label, Button } from 'reactstrap';
+import configureStore  from '../store/configureStore';
+import { handleInputChange, addTransaction } from '../actions';
+
+const store = configureStore();
+
+store.subscribe(() =>
+    console.log(store.getState())
+)
 
 const Transaction = () => {
     const [amount, setAmount] = useState('6984,89');
@@ -23,11 +31,11 @@ const Transaction = () => {
         };
         axios.post('http://localhost:5000/api/transaction', body, config)
         .then((res) => {
-            console.log(res.data);
+            store.dispatch(handleInputChange(res.data))
+            store.dispatch(addTransaction())
             setMessage('Intercambio realizado.');
         })
         .catch((err) => {
-            console.log(err);
             setMessage('Intercambio no realizado.');
         })
     };
