@@ -4,7 +4,7 @@ import axios from 'axios';
 import CurrencyInput from 'react-currency-input';
 import { Alert, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle, Label, Button } from 'reactstrap';
 import configureStore  from '../store/configureStore';
-import { handleInputChange, addTransaction } from '../actions';
+import { handleInputChange, handleInputChangeJson, addTransaction } from '../actions';
 
 const store = configureStore();
 
@@ -16,8 +16,13 @@ const Transaction = () => {
     const [amount, setAmount] = useState('6984,89');
     const [message, setMessage] = useState('');
 
+    let usd = parseFloat(amount.toString().replace('.', '').replace(',', '.'));
+
+    store.dispatch(handleInputChange('currency_receive', 'btc'))
+    store.dispatch(handleInputChange('commission', 0))
+    store.dispatch(handleInputChange('amount', usd))
+    
     const handleClick = () => {
-        let usd = parseFloat(amount.toString().replace('.', '').replace(',', '.'));
         let config = {
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
@@ -25,13 +30,13 @@ const Transaction = () => {
             }
         };
         let body = {
-            "currency_send": "usd",
-            "currency_receive": "btc",
-            "amount": usd
+            "currency_send": 'usd',
+            "currency_receive": store.getState().transactions.newTransaction.currency_receive,
+            "amount": store.getState().transactions.newTransaction.amount
         };
         axios.post('http://localhost:5000/api/transaction', body, config)
         .then((res) => {
-            store.dispatch(handleInputChange(res.data))
+            store.dispatch(handleInputChangeJson(res.data))
             store.dispatch(addTransaction())
             setMessage('Exchange done');
         })

@@ -5,16 +5,16 @@ export const addTransaction = () => {
 	}
 }
 
-export const handleInputChange = (json) => {
+export const handleInputChange = (name, value) => {
 	return {
-		
 		type: "HANDLE_INPUT_CHANGE",
-		payload: json.data
+		payload: { [name]: value }
 	}
 }
 
-export const toggleTransactionForm = () => {
+export const handleInputChangeJson = (json) => {
 	return {
-		type: "TOGGLE_TRANSACTION_FORM",
+		type: "HANDLE_INPUT_CHANGE",
+		payload: json.data
 	}
 }
