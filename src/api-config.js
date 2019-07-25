@@ -2,8 +2,8 @@ let backendHost;
 
 const hostname = window && window.location && window.location.hostname;
 
-if(hostname === 'vitawallet.io') {
-  backendHost = 'https://vitawallet.io';
+if(hostname === 'vita-wallet.herokuapp.com') {
+  backendHost = 'https://murmuring-ravine-36963.herokuapp.com';
 } else if(hostname === 'staging.vitawallet.io') {
   backendHost = 'https://staging.api.vitawallet.io';
 } else if(/^qa/.test(hostname)) {
