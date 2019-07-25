@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CurrencyInput from 'react-currency-input';
+import { handleInputChange } from '../actions';
 
-const Fee = (amount) => {
+const Fee = (st) => {
   const [fee, changeFee] = useState(undefined);
+
+  const store = st.store;
 
   useEffect(
     () => {
       getFee();
     },
-    [amount]
+    [st]
   );
 
   const getFee = () => {
@@ -20,13 +23,16 @@ const Fee = (amount) => {
 
   if (fee === undefined) return null;
 
-  let usd = (amount.Amount).toString().replace('.', '').replace(',', '.');
-  let r = ((parseFloat(usd) / fee.btc_buy)).toFixed(9);
+  store.dispatch(handleInputChange('fee', fee.btc_buy));
+
+  let r = (store.getState().transactions.newTransaction.amount / fee.btc_buy).toFixed(9);
   r = r.toString().substring(0, (r.length - 1));
   r = parseFloat(r);
 
+  store.dispatch(handleInputChange('total', r));
+
   return (
-    <CurrencyInput decimalSeparator="," thousandSeparator="." precision="8" value={r}/>
+    <CurrencyInput decimalSeparator="," thousandSeparator="." precision="8" value={store.getState().transactions.newTransaction.total}/>
   );
 
 }

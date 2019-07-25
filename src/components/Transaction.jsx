@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Fee from './Fee';
 import axios from 'axios';
 import CurrencyInput from 'react-currency-input';
 import { Alert, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle, Label, Button } from 'reactstrap';
+import Fee from './Fee';
 import configureStore  from '../store/configureStore';
 import { handleInputChange, handleInputChangeJson, addTransaction } from '../actions';
 
@@ -62,7 +62,7 @@ const Transaction = () => {
                             </CardTitle>
                             <CardSubtitle>
                                 <Label for="receive">Receive in BTC</Label><br></br>
-                                <Fee Amount={amount} />
+                                <Fee store={store} />
                             </CardSubtitle>
                             <Alert color="light">{message}</Alert>
                             <Button color="info" onClick={handleClick}>BUY</Button>
