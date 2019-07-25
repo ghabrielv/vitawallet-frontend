@@ -5,9 +5,9 @@ import { handleInputChange } from '../actions';
 import { API_ROOT } from '../api-config';
 
 const Fee = (st) => {
-  const [fee, changeFee] = useState(undefined);
-
   const store = st.store;
+
+  const [fee, changeFee] = useState(store.getState().transactions.newTransaction.fee);
 
   useEffect(
     () => {
