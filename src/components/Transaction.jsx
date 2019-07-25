@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Fee from './Fee';
 import axios from 'axios';
 import CurrencyInput from 'react-currency-input';
-import { Alert, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle, CardText, Label, Button } from 'reactstrap';
+import { Alert, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle, Label, Button } from 'reactstrap';
 import configureStore  from '../store/configureStore';
 import { handleInputChange, addTransaction } from '../actions';
 
@@ -33,10 +33,10 @@ const Transaction = () => {
         .then((res) => {
             store.dispatch(handleInputChange(res.data))
             store.dispatch(addTransaction())
-            setMessage('Intercambio realizado.');
+            setMessage('Exchange done');
         })
         .catch((err) => {
-            setMessage('Intercambio no realizado.');
+            setMessage('Exchange fail');
         })
     };
 
@@ -52,15 +52,15 @@ const Transaction = () => {
                     <Card>
                         <CardBody>
                             <CardTitle>
-                                <Label for="amount">Amount USD</Label>
+                                <Label for="amount" color="blue">Send in USD</Label>
                                 <div><CurrencyInput decimalSeparator="," thousandSeparator="." precision="2" value={amount} onChangeEvent={handleChange}/></div>
                             </CardTitle>
                             <CardSubtitle>
-                                <Label for="receive">Receive BTC</Label><br></br>
+                                <Label for="receive">Receive in BTC</Label><br></br>
                                 <Fee Amount={amount} />
                             </CardSubtitle>
                             <Alert color="light">{message}</Alert>
-                            <Button color="info" onClick={handleClick}>COMPRAR</Button>
+                            <Button color="info" onClick={handleClick}>BUY</Button>
                         </CardBody>
                     </Card>
                 </Col>
