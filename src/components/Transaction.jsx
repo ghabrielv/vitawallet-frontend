@@ -51,20 +51,16 @@ const Transaction = () => {
                     <br></br>
                     <Card>
                         <CardBody>
-                        <CardTitle>
-                            <Label for="amount">Amount USD</Label>
-                            <div><CurrencyInput decimalSeparator="," thousandSeparator="." precision="2" value={amount} onChangeEvent={handleChange}/></div>
-                        </CardTitle>
-                        <CardSubtitle>
-                            <Label for="receive">Receive BTC</Label><br></br>
-                            <Fee Amount={amount} />
-                        </CardSubtitle>
-                        <CardText>
-                            <Alert color="light">
-                                {message}
-                            </Alert>
-                        </CardText>
-                        <Button color="info" onClick={handleClick}>COMPRAR</Button>
+                            <CardTitle>
+                                <Label for="amount">Amount USD</Label>
+                                <div><CurrencyInput decimalSeparator="," thousandSeparator="." precision="2" value={amount} onChangeEvent={handleChange}/></div>
+                            </CardTitle>
+                            <CardSubtitle>
+                                <Label for="receive">Receive BTC</Label><br></br>
+                                <Fee Amount={amount} />
+                            </CardSubtitle>
+                            <Alert color="light">{message}</Alert>
+                            <Button color="info" onClick={handleClick}>COMPRAR</Button>
                         </CardBody>
                     </Card>
                 </Col>
