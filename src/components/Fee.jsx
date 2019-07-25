@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CurrencyInput from 'react-currency-input';
 import { handleInputChange } from '../actions';
+import { API_ROOT } from '../api-config';
 
 const Fee = (st) => {
   const [fee, changeFee] = useState(undefined);
@@ -16,7 +17,7 @@ const Fee = (st) => {
   );
 
   const getFee = () => {
-    axios.get('http://localhost:5000/api/fee').then(res => {
+    axios.get(API_ROOT + '/fee').then(res => {
       changeFee(res.data);
     });
   };

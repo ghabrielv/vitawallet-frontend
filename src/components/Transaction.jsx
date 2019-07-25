@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import Fee from './Fee';
 import configureStore  from '../store/configureStore';
 import { handleInputChange, handleInputChangeJson, addTransaction } from '../actions';
+import { API_ROOT } from '../api-config';
 
 const store = configureStore();
 
@@ -33,7 +34,7 @@ const Transaction = (props) => {
             "currency_receive": props.newTransaction.currency_receive,
             "amount": usd
         };
-        axios.post('http://localhost:5000/api/transaction', body, config)
+        axios.post(API_ROOT + '/transaction', body, config)
         .then((res) => {
             store.dispatch(handleInputChangeJson(res.data))
             store.dispatch(addTransaction())
